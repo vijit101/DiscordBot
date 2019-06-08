@@ -19,10 +19,10 @@ client.on('message',async msg => {
     if (msg.author.username != "Bot_helper") {
         console.log(msg);
         if (msg.type == "GUILD_MEMBER_JOIN") {
-            console.log("User Joined" + message.author.username + " " + msg.author.id);
+            console.log("User Joined" + msg.author.username + " " + msg.author.id);
             var userInfo = {
                 ID: msg.author.id,
-                UserName: message.author.username
+                UserName: msg.author.username
             }
             DatabaseSystem.CreateUser(userInfo);
             msg.reply("Welcome");
@@ -31,7 +31,8 @@ client.on('message',async msg => {
         } else if (msg.content == '!leaderboard') {
             Command.LeaderBoard();
         } else if (msg.content == '!points') {
-            Command.Points(msg.author.id);
+            var points = await Command.Points(msg.author.id);
+            SendMessageToGeneralChannel("Your Karma points are : "+points.KarmaPoints);
         } else if (msg.content == '!help') {
             msg.reply(Command.Help());
         }
