@@ -1,21 +1,28 @@
 DatabaseSystem = require('../DatabaseSystem/SaveSystem');
 
 var LeaderBoard = function LeaderBoard() {
-    return new Promise(async resolve => { 
-        var Udata=await DatabaseSystem.GetTopKaraUsers();
-        resolve(Udata);
+    return new Promise(async resolve => {
+        var Udata = await DatabaseSystem.GetTopKarmaUsers();
+        var leaderboardData = "";
+        leaderboardData = leaderboardData + "Your Gurus Are\n"
+        leaderboardData = leaderboardData + "User Name : Karma Points" + "\n";
+        for (var i = 0; i < Udata.length; i++) {
+            leaderboardData = leaderboardData + Udata[i].UserName + " : " + Udata[i].KarmaPoints + "\n";
+        }
+        resolve(leaderboardData);
     });
 }
 
 var Points = function Points(UID) {
-    return new Promise(async resolve => { 
-        var data=await DatabaseSystem.GetUsersPoints(UID);
-        resolve(data);
+    return new Promise(async resolve => {
+        var data = await DatabaseSystem.GetUsersPoints(UID);
+
+        resolve("Your Karma points are : " + data.KarmaPoints);
     });
 }
 
 var Help = function Help() {
-   return "here are some Commands You can Try";
+    return "here are some Commands You can Try";
 }
 
 module.exports = {

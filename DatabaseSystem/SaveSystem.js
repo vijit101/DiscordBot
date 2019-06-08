@@ -69,17 +69,17 @@ var CreateUser = function RegisterNewUser(userInfo) {
     });
 }
 
-var UpdateKarmaPoints = function Update(userName) {
+var UpdateKarmaPoints = function Update(UID) {
     pool.getConnection(function (err, connection) {
         if (err) {
             connection.release();
             res.json({ "code": 100, "status": "Error in connection database" });
             return ("error");
         } else {
-            var sql = "UPDATE UserKarma SET KarmaPoints = KarmaPoints + 1 WHERE UserName = ? ";
-            connection.query(sql, [parseInt(userName)], function (err, result) {
+            var sql = "UPDATE UserKarma SET KarmaPoints = KarmaPoints + 1 WHERE UID = ? ";
+            connection.query(sql, [UID], function (err, result) {
                 if (err) throw err;
-                console.log(" User's Points Updated");
+                console.log(" User's Points Updated"+ result);
             });
         }
         connection.release();

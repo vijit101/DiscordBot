@@ -15,9 +15,8 @@ client.on('ready', () => {
     generalChannel = client.channels.get(Tokens.GENERAL_CHANNEL_ID);
 });
 
-client.on('message',async msg => {
+client.on('message', async msg => {
     if (msg.author.username != "Bot_helper") {
-        console.log(msg);
         if (msg.type == "GUILD_MEMBER_JOIN") {
             console.log("User Joined" + msg.author.username + " " + msg.author.id);
             var userInfo = {
@@ -29,12 +28,21 @@ client.on('message',async msg => {
         } else if (msg.content == 'ping') {
             SendMessageToGeneralChannel("pong");
         } else if (msg.content == '!leaderboard') {
-            Command.LeaderBoard();
+            var leaderboardString=await Command.LeaderBoard();
+            SendMessageToGeneralChannel(leaderboardString);
         } else if (msg.content == '!points') {
-            var points = await Command.Points(msg.author.id);
-            SendMessageToGeneralChannel("Your Karma points are : "+points.KarmaPoints);
+            var messagePoints = await Command.Points(msg.author.id);
+            SendMessageToGeneralChannel(messagePoints);
         } else if (msg.content == '!help') {
             msg.reply(Command.Help());
+        } else if (msg.content.includes("thank")) {
+            //console.log(msg.mentions.users.array()[0]);
+            for (var i = 0; i < msg.mentions.users.size; i++) {
+                console.log(msg.mentions.users.array()[i].id);
+                if (msg.mentions.users.array()[i].id != msg.author.id) {
+                    DatabaseSystem.UpdateKarmaPoints(msg.mentions.users.array()[i].id);
+                }
+            }
         }
     }
 });
