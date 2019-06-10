@@ -22,7 +22,7 @@ var Points = function Points(UID) {
 }
 
 var Help = function Help() {
-    return "here are some Commands You can Try";
+    return "here are some Commands You can Try \n* !help\n* !points\n* !leaderboard";
 }
 
 module.exports = {
