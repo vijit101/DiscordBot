@@ -8,7 +8,6 @@ DatabaseSystem.SetupSQLDatabase();
 var generalChannel;
 
 client.login(Tokens.DISCORD_APP_TOKEN);
-
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     //ListOfServers();
@@ -16,6 +15,8 @@ client.on('ready', () => {
 });
 
 client.on('message', async msg => {
+   // SetupBotForChannel(msg);
+    //console.log(msg.channel.members.size);
     if (msg.author.username != "Bot_helper") {
         if (msg.type == "GUILD_MEMBER_JOIN") {
             console.log("User Joined" + msg.author.username + " " + msg.author.id);
@@ -28,7 +29,7 @@ client.on('message', async msg => {
         } else if (msg.content == 'ping') {
             SendMessageToGeneralChannel("pong");
         } else if (msg.content == '!leaderboard') {
-            var leaderboardString=await Command.LeaderBoard();
+            var leaderboardString = await Command.LeaderBoard();
             SendMessageToGeneralChannel(leaderboardString);
         } else if (msg.content == '!points') {
             var messagePoints = await Command.Points(msg.author.id);
@@ -47,6 +48,25 @@ client.on('message', async msg => {
     }
 });
 
+function SetupBotForChannel(msg){
+    for (var i = 0; i < msg.channel.members.size; i++) {
+        var userInfo = { };
+        if(msg.channel.members.array()[i].nickname!=null){
+            console.log(msg.channel.members.array()[i].nickname)
+            userInfo = {
+                ID: msg.channel.members.array()[i].user.id,
+                UserName: msg.channel.members.array()[i].nickname
+            }
+        }else{
+            console.log(msg.channel.members.array()[i].user.username);
+            userInfo = {
+                ID: msg.channel.members.array()[i].user.id,
+                UserName: msg.channel.members.array()[i].user.username
+            }
+        }
+        DatabaseSystem.CreateUser(userInfo);
+    }
+}
 function SendAttatchment(link) {
     // Provide a path to a local file or link
     const localFileAttachment = new Discord.Attachment(link);

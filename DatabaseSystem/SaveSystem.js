@@ -21,7 +21,7 @@ var SetupSQLDatabase = function SetupSQLDatabase() {
 }
 
 var pool = mysql.createPool({
-    connectionLimit: 10,
+    connectionLimit: 30,
     host: Settings.host,
     user: Settings.user,
     password: Settings.password,
@@ -94,7 +94,7 @@ var GetTopKarmaUsers = function GetTopKarmaUsers() {
                 res.json({ "code": 100, "status": "Error in connection database" });
                 resolve("error");
             } else {
-                var sql = "SELECT * FROM UserKarma ORDER BY KarmaPoints LIMIT 10";
+                var sql = "SELECT * FROM UserKarma ORDER BY KarmaPoints DESC LIMIT 5";
                 connection.query(sql, function (err, result) {
                     if (err) throw err;
                     console.log("SQL Data stats" + JSON.stringify(result));

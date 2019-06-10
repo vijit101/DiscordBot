@@ -7,7 +7,9 @@ var LeaderBoard = function LeaderBoard() {
         leaderboardData = leaderboardData + "Your Gurus Are\n"
         leaderboardData = leaderboardData + "User Name : Karma Points" + "\n";
         for (var i = 0; i < Udata.length; i++) {
-            leaderboardData = leaderboardData + Udata[i].UserName + " : " + Udata[i].KarmaPoints + "\n";
+            if (Udata[i].KarmaPoints != 0) {
+                leaderboardData = leaderboardData + Udata[i].UserName + " : " + Udata[i].KarmaPoints + "\n";
+            }
         }
         resolve(leaderboardData);
     });
