@@ -9,14 +9,14 @@ var generalChannel;
 
 client.login(Tokens.DISCORD_APP_TOKEN);
 client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
+    console.log(`Logged in as ${client.user.tag}`);
     //ListOfServers();
     generalChannel = client.channels.get(Tokens.GENERAL_CHANNEL_ID);
 });
 
 client.on('message', async msg => {
    // SetupBotForChannel(msg);
-    //console.log(msg.channel.members.size);
+    //console.log(msg.channel.id);
     if (msg.author.username != "Bot_helper") {
         if (msg.type == "GUILD_MEMBER_JOIN") {
             console.log("User Joined" + msg.author.username + " " + msg.author.id);
@@ -27,13 +27,13 @@ client.on('message', async msg => {
             DatabaseSystem.CreateUser(userInfo);
             msg.reply("Welcome");
         } else if (msg.content == 'ping') {
-            SendMessageToGeneralChannel("pong");
+            SendMessageToChannel("pong",msg.channel.id);
         } else if (msg.content == '!leaderboard') {
             var leaderboardString = await Command.LeaderBoard();
-            SendMessageToGeneralChannel(leaderboardString);
+            SendMessageToChannel(leaderboardString,msg.channel.id);
         } else if (msg.content == '!points') {
             var messagePoints = await Command.Points(msg.author.id);
-            SendMessageToGeneralChannel(messagePoints);
+            SendMessageToChannel(messagePoints,msg.channel.id);
         } else if (msg.content == '!help') {
             msg.reply(Command.Help());
         } else if (msg.content.includes("thank")) {
@@ -92,6 +92,7 @@ function ListOfChannels(guild) {
     })
 }
 
-function SendMessageToGeneralChannel(message) {
-    generalChannel.send(message);
+function SendMessageToChannel(message,channelID) {
+    var channel=client.channels.get(channelID);
+    channel.send(message);
 }
