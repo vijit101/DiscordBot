@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const Tokens = require('./Strings/ServerStrings');
 const DatabaseSystem = require('./DatabaseSystem/SaveSystem');
 const Command = require('./Response/BotCammands.js');
+
 const client = new Discord.Client();
 
 DatabaseSystem.SetupSQLDatabase();
@@ -15,7 +16,7 @@ client.on('ready', () => {
 });
 
 client.on('message', async msg => {
-   // SetupBotForChannel(msg);
+    //SetupBotForChannel(msg);
     //console.log(msg.channel.id);
     if (msg.author.username != "Bot_helper") {
         if (msg.type == "GUILD_MEMBER_JOIN") {
@@ -25,7 +26,7 @@ client.on('message', async msg => {
                 UserName: msg.author.username
             }
             DatabaseSystem.CreateUser(userInfo);
-            msg.reply("Welcome");
+            msg.reply("Welcome! Please introduce yourself to the rest of the clan.");
         } else if (msg.content == 'ping') {
             SendMessageToChannel("pong",msg.channel.id);
         } else if (msg.content == '!leaderboard') {
@@ -42,6 +43,7 @@ client.on('message', async msg => {
                 console.log(msg.mentions.users.array()[i].id);
                 if (msg.mentions.users.array()[i].id != msg.author.id) {
                     DatabaseSystem.UpdateKarmaPoints(msg.mentions.users.array()[i].id);
+                    SendMessageToChannel("Karma point awarded to:" + msg.mentions.user.array()[i].id,msg.channel.id);
                 }
             }
         }

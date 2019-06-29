@@ -6,6 +6,7 @@ var con = mysql.createConnection({
     user: Settings.user,
     password: Settings.password,
 });
+
 var SetupSQLDatabase = function SetupSQLDatabase() {
     console.log("SQLServer tried connecting!");
     con.connect(function (err) {
