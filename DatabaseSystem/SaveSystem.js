@@ -1,10 +1,11 @@
 var mysql = require('mysql');
-var Settings = require('../Strings/ServerSettings');
+var dotenv = require('dotenv')
+dotenv.config();
 
 var con = mysql.createConnection({
-    host: Settings.host,
-    user: Settings.user,
-    password: Settings.password,
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
 });
 
 var SetupSQLDatabase = function SetupSQLDatabase() {
@@ -23,10 +24,10 @@ var SetupSQLDatabase = function SetupSQLDatabase() {
 
 var pool = mysql.createPool({
     connectionLimit: 30,
-    host: Settings.host,
-    user: Settings.user,
-    password: Settings.password,
-    database: Settings.database
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE
 });
 
 function SetupTables() {

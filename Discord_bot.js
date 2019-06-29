@@ -1,23 +1,22 @@
 const Discord = require('discord.js');
-const Tokens = require('./Strings/ServerStrings');
 const DatabaseSystem = require('./DatabaseSystem/SaveSystem');
 const Command = require('./Response/BotCammands.js');
+
+const dotenv = require('dotenv');
+dotenv.config();
 
 const client = new Discord.Client();
 
 DatabaseSystem.SetupSQLDatabase();
 var generalChannel;
 
-client.login(Tokens.DISCORD_APP_TOKEN);
+client.login(process.env.DISCORD_APP_TOKEN); 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
-    //ListOfServers();
-    generalChannel = client.channels.get(Tokens.GENERAL_CHANNEL_ID);
+    generalChannel = client.channels.get(process.env.GENERAL_CHANNEL_ID);
 });
 
 client.on('message', async msg => {
-    //SetupBotForChannel(msg);
-    //console.log(msg.channel.id);
     if (msg.author.username != "Bot_helper") {
         if (msg.type == "GUILD_MEMBER_JOIN") {
             console.log("User Joined" + msg.author.username + " " + msg.author.id);
@@ -69,6 +68,7 @@ function SetupBotForChannel(msg){
         DatabaseSystem.CreateUser(userInfo);
     }
 }
+
 function SendAttatchment(link) {
     // Provide a path to a local file or link
     const localFileAttachment = new Discord.Attachment(link);
