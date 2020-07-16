@@ -8,12 +8,12 @@ dotenv.config();
 const client = new Discord.Client();
 
 //DatabaseSystem.SetupSQLDatabase();
-var generalChannel;
+//var generalChannel;
 
 client.login(process.env.DISCORD_APP_TOKEN); 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
-    generalChannel = client.channels.get(process.env.GENERAL_CHANNEL_ID);
+    //generalChannel = client.channels.get(process.env.GENERAL_CHANNEL_ID);
 });
 
 client.on('message', async msg => {
@@ -28,7 +28,7 @@ client.on('message', async msg => {
         //     msg.reply("Welcome! Please introduce yourself to the rest of the clan.");
         // } 
         if (msg.content == 'ping') {
-            SendMessageToChannel("pong",msg.channel.id);
+            SendMessageToChannel("pong",msg.channel);
         } 
         // else if (msg.content == '!leaderboard') {
         //     var leaderboardString = await Command.LeaderBoard();
@@ -41,9 +41,9 @@ client.on('message', async msg => {
         else if (msg.content == '!help') {
             msg.reply(Command.Help());
         } 
-        else if (msg.content.startsWith("!giverole") && msg.channel.name.contains("bot")) { 
+        else if (msg.content.startsWith("!giverole") && msg.channel.name.has("bot")) { 
             var reply = await Command.GiveRole(msg);
-            SendMessageToChannel(reply, msg.channel.id);
+            SendMessageToChannel(reply, msg.channel);
         }
         // else if (msg.content.includes("thank")) {
         //     //console.log(msg.mentions.users.array()[0]);
@@ -104,6 +104,6 @@ function ListOfChannels(guild) {
 }
 
 function SendMessageToChannel(message,channelID) {
-    var channel=client.channels.get(channelID);
+    //var channel=client.channels.get(channelID);
     channel.send(message);
 }
