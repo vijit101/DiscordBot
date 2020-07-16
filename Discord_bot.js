@@ -28,7 +28,7 @@ client.on('message', async msg => {
         //     msg.reply("Welcome! Please introduce yourself to the rest of the clan.");
         // } 
         if (msg.content == 'ping') {
-            SendMessageToChannel("pong",msg.channel);
+            SendMessageToChannel("pong",msg.channel.id);
         } 
         // else if (msg.content == '!leaderboard') {
         //     var leaderboardString = await Command.LeaderBoard();
@@ -41,9 +41,9 @@ client.on('message', async msg => {
         else if (msg.content == '!help') {
             msg.reply(Command.Help());
         } 
-        else if (msg.content.startsWith("!giverole") && msg.channel.name.has("bot")) { 
+        else if (msg.content.startsWith("!giverole") && msg.channel.name === "bot") { 
             var reply = await Command.GiveRole(msg);
-            SendMessageToChannel(reply, msg.channel);
+            SendMessageToChannel(reply, msg.channel.id);
         }
         // else if (msg.content.includes("thank")) {
         //     //console.log(msg.mentions.users.array()[0]);
@@ -104,6 +104,5 @@ function ListOfChannels(guild) {
 }
 
 function SendMessageToChannel(message,channelID) {
-    //var channel=client.channels.get(channelID);
-    channel.send(message);
+    client.channels.cache.get(channelID).send(message);
 }
