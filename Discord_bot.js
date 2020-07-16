@@ -18,25 +18,34 @@ client.on('ready', () => {
 
 client.on('message', async msg => {
     if (msg.author.username != "Bot_helper") {
-        if (msg.type == "GUILD_MEMBER_JOIN") {
-            console.log("User Joined" + msg.author.username + " " + msg.author.id);
-            var userInfo = {
-                ID: msg.author.id,
-                UserName: msg.author.username
-            }
-            DatabaseSystem.CreateUser(userInfo);
-            msg.reply("Welcome! Please introduce yourself to the rest of the clan.");
-        } else if (msg.content == 'ping') {
+        // if (msg.type == "GUILD_MEMBER_JOIN") {
+        //     console.log("User Joined" + msg.author.username + " " + msg.author.id);
+        //     var userInfo = {
+        //         ID: msg.author.id,
+        //         UserName: msg.author.username
+        //     }
+        //     DatabaseSystem.CreateUser(userInfo);
+        //     msg.reply("Welcome! Please introduce yourself to the rest of the clan.");
+        // } 
+        if (msg.content == 'ping') {
             SendMessageToChannel("pong",msg.channel.id);
-        } else if (msg.content == '!leaderboard') {
-            var leaderboardString = await Command.LeaderBoard();
-            SendMessageToChannel(leaderboardString,msg.channel.id);
-        } else if (msg.content == '!points') {
-            var messagePoints = await Command.Points(msg.author.id);
-            SendMessageToChannel(messagePoints,msg.channel.id);
-        } else if (msg.content == '!help') {
+        } 
+        // else if (msg.content == '!leaderboard') {
+        //     var leaderboardString = await Command.LeaderBoard();
+        //     SendMessageToChannel(leaderboardString,msg.channel.id);
+        // } 
+        // else if (msg.content == '!points') {
+        //     var messagePoints = await Command.Points(msg.author.id);
+        //     SendMessageToChannel(messagePoints,msg.channel.id);
+        // } 
+        else if (msg.content == '!help') {
             msg.reply(Command.Help());
-        } else if (msg.content.includes("thank")) {
+        } 
+        else if (msg.content.startsWith("!giverole") && msg.channel.name.contains("bot")) { 
+            var reply = await Command.GiveRole(msg);
+            SendMessageToChannel(reply, msg.channel.id);
+        }
+        else if (msg.content.includes("thank")) {
             //console.log(msg.mentions.users.array()[0]);
             for (var i = 0; i < msg.mentions.users.size; i++) {
                 console.log(msg.mentions.users.array()[i].id);
@@ -48,6 +57,7 @@ client.on('message', async msg => {
         }
     }
 });
+ 
 
 function SetupBotForChannel(msg){
     for (var i = 0; i < msg.channel.members.size; i++) {

@@ -1,4 +1,5 @@
 DatabaseSystem = require('../DatabaseSystem/SaveSystem');
+const Discord = require('discord.js');
 
 var LeaderBoard = function LeaderBoard() {
     return new Promise(async resolve => {
@@ -18,7 +19,6 @@ var LeaderBoard = function LeaderBoard() {
 var Points = function Points(UID) {
     return new Promise(async resolve => {
         var data = await DatabaseSystem.GetUsersPoints(UID);
-
         resolve("Your Karma points are : " + data.KarmaPoints);
     });
 }
@@ -27,8 +27,20 @@ var Help = function Help() {
     return "here are some Commands You can Try \n* !help\n* !points\n* !leaderboard";
 }
 
+var GiveRole = function GiveRole(message) { 
+    return new Promise(async resolve => {
+        // get roles info from google spreadsheet (load it once only!)
+        // decide which is the next role to be granted to the user 
+        // verify the user is on the Target Colleges -> GCStudents sheet (they are in GC!)
+        // then only give them the cpp-group-X role 
+        // write the email id and role given to Daily Updates -> Roles sheet 
+        resolve("Granting role!");
+    });
+}
+
 module.exports = {
     LeaderBoard,
     Points,
-    Help
+    Help,
+    GiveRole
 }
