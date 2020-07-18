@@ -47,10 +47,10 @@ client.on('message', async msg => {
                 var studentId = splitMsgContents[1];
                 var batchID = splitMsgContents[2];
                 const roleToAssign = msg.guild.roles.cache.find(role=>role.id == batchID);
-                console.log(splitMsgContents);
-                console.log(roleToAssign.name);
+                //console.log(splitMsgContents);
+                //console.log(roleToAssign.name);
                 const studentmember = msg.guild.members.cache.find(member=>member.id == studentId);
-                console.log(studentmember.nickname);             
+                //console.log(studentmember.nickname);             
                 studentmember.roles.add(roleToAssign);    
                 //msg.member.roles.add(roleToAssign);           
                 //var reply = await Command.GiveRole(msg,splitMsgContents[1],splitMsgContents[2]);
