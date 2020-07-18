@@ -18,8 +18,11 @@
   },
   "homepage": "https://github.com/outscal/DiscordBot#readme",
   "dependencies": {
+    "discord": "^0.8.2",
+    "discord.js": "^12.2.0",
     "dotenv": "^8.0.0",
-    "discord": "^0.8.2"
+    "google-spreadsheet": "^3.0.11",
+    "node-opus": "^0.3.3"
   },
   "devDependencies": {}
 }

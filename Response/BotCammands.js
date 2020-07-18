@@ -1,4 +1,6 @@
 DatabaseSystem = require('../DatabaseSystem/SaveSystem');
+const Discord = require('discord.js');
+const GoogleSpreadSheet = require('google-spreadsheet');
 
 var LeaderBoard = function LeaderBoard() {
     return new Promise(async resolve => {
@@ -18,7 +20,6 @@ var LeaderBoard = function LeaderBoard() {
 var Points = function Points(UID) {
     return new Promise(async resolve => {
         var data = await DatabaseSystem.GetUsersPoints(UID);
-
         resolve("Your Karma points are : " + data.KarmaPoints);
     });
 }
@@ -27,8 +28,29 @@ var Help = function Help() {
     return "here are some Commands You can Try \n* !help\n* !points\n* !leaderboard";
 }
 
+var GiveRole = function GiveRole(message) { 
+    return new Promise(async resolve => {
+        // !giverole cpp abc@gmail.com
+        var batchName;
+        var emailID;
+
+        // get roles info from google spreadsheet (load it once only!)
+        var roleList;
+        // decide which is the next role to be granted to the user 
+        // verify the user is on the Target Colleges -> GCStudents sheet (they are in GC!)
+        //load college studs from gc if email == emailgc bool isInSheet  = true
+        // if isInGC true then only give them the cpp-group-X role 
+        // write the email id, role given, userid to Daily Updates -> Roles sheet (userid = message.author.id)
+        // for more info on google sheet integration ref - https://gist.github.com/mayankgrover/1be4978dec294863f14924de5ceecc5b
+        console.log(message);
+        resolve("Granting role: " + message.author);
+    });
+}
+
+
 module.exports = {
     LeaderBoard,
     Points,
-    Help
+    Help,
+    GiveRole
 }
