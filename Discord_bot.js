@@ -45,6 +45,9 @@ client.on('message', async msg => {
             var reply = await Command.GiveRole(msg);
             SendMessageToChannel(reply, msg.channel.id);
         }
+        else if (msg.content.startsWith("!showid") && msg.channel.name === "bot") {           
+            msg.reply("Your Discord Id is : " + msg.author);           
+        }
         // else if (msg.content.includes("thank")) {
         //     //console.log(msg.mentions.users.array()[0]);
         //     for (var i = 0; i < msg.mentions.users.size; i++) {

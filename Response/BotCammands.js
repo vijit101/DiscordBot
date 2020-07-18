@@ -47,6 +47,7 @@ var GiveRole = function GiveRole(message) {
     });
 }
 
+
 module.exports = {
     LeaderBoard,
     Points,
