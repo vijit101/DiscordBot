@@ -41,9 +41,25 @@ client.on('message', async msg => {
         else if (msg.content == '!help') {
             msg.reply(Command.Help());
         } 
-        else if (msg.content.startsWith("!giverole") && msg.channel.name === "bot") { 
-            var reply = await Command.GiveRole(msg);
-            SendMessageToChannel(reply, msg.channel.id);
+        else if (msg.content.startsWith("!giverole") && msg.channel.name === "bot"){
+            if(msg.member.roles.cache.some(role => role.name === 'team')) { 
+                var splitMsgContents = msg.content.split(" ");
+                var studentId = splitMsgContents[1];
+                var batchID = splitMsgContents[2];
+                const roleToAssign = msg.guild.roles.cache.find(role=>role.id == batchID);
+                //console.log(splitMsgContents);
+                //console.log(roleToAssign.name);
+                const studentmember = msg.guild.members.cache.find(member=>member.id == studentId);
+                //console.log(studentmember.nickname);             
+                studentmember.roles.add(roleToAssign);    
+                //msg.member.roles.add(roleToAssign);           
+                //var reply = await Command.GiveRole(msg,splitMsgContents[1],splitMsgContents[2]);
+                msg.reply("student : "+studentmember.displayName+" is assigned to role " + roleToAssign.name);
+            }
+        }
+        else if (msg.content.startsWith("!showid") && msg.channel.name === "bot") {           
+            msg.reply("Your Discord Id is : " + msg.author);    
+            //SendMessageToChannel(reply, msg.channel.id);       
         }
         // else if (msg.content.includes("thank")) {
         //     //console.log(msg.mentions.users.array()[0]);
