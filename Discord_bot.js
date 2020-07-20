@@ -43,18 +43,26 @@ client.on('message', async msg => {
         } 
         else if (msg.content.startsWith("!giverole") && msg.channel.name === "bot"){
             if(msg.member.roles.cache.some(role => role.name === 'team')) { 
-                var splitMsgContents = msg.content.split(" ");
-                var studentId = splitMsgContents[1];
-                var batchID = splitMsgContents[2];
+                // command as !giverole discordId,discordId roleId
+                var splitMsgContents = msg.content.split(" ");    // splitting command contents 
+                var allStudentId = splitMsgContents[1];           // All discord ID's
+                var batchID = splitMsgContents[2];                // roleId to assign
+                var studentIdList = allStudentId.split(",");
                 const roleToAssign = msg.guild.roles.cache.find(role=>role.id == batchID);
                 //console.log(splitMsgContents);
-                //console.log(roleToAssign.name);
-                const studentmember = msg.guild.members.cache.find(member=>member.id == studentId);
+                //console.log(studentIdList.length);
+                for(var i = 0 ;i<studentIdList.length;i++){
+                    var studentmember = msg.guild.members.cache.find(member=>member.id == studentIdList[i]); //find from discord id which member of discord 
+                    studentmember.roles.add(roleToAssign);
+                    msg.reply("student : "+studentmember.displayName+" is assigned to role " + roleToAssign.name); 
+                }               
+                // old code             
+                //const studentmember = msg.guild.members.cache.find(member=>member.id == studentId);
                 //console.log(studentmember.nickname);             
-                studentmember.roles.add(roleToAssign);    
+                //studentmember.roles.add(roleToAssign);    
                 //msg.member.roles.add(roleToAssign);           
                 //var reply = await Command.GiveRole(msg,splitMsgContents[1],splitMsgContents[2]);
-                msg.reply("student : "+studentmember.displayName+" is assigned to role " + roleToAssign.name);
+                //msg.reply("student : "+studentmember.displayName+" is assigned to role " + roleToAssign.name);
             }
         }
         else if (msg.content.startsWith("!showid") && msg.channel.name === "bot") {           
