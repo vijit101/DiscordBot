@@ -65,6 +65,32 @@ client.on('message', async msg => {
                 //msg.reply("student : "+studentmember.displayName+" is assigned to role " + roleToAssign.name);
             }
         }
+        else if (msg.content.startsWith("!createrole") && msg.channel.name === "bot"){
+            if(msg.member.roles.cache.some(role => role.name === 'team')) 
+            { 
+                // command as !createrole rolename ['permissions','permission2']
+                var splitMsgContents = msg.content.split(" ");    // splitting command content
+                var roleName = splitMsgContents[1];
+                var rolePermissions = splitMsgContents[2];
+                var defaultPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS'];
+                if(rolePermissions == null)
+                {
+                    rolePermissions = defaultPerms;
+                }
+                msg.guild.roles.create({data:{name:roleName,permissions:rolePermissions}});
+            }
+        }
+        else if (msg.content.startsWith("!createchannel") && msg.channel.name === "bot"){
+            if(msg.member.roles.cache.some(role => role.name === 'team')) {
+                var splitMsgContents = msg.content.split(" ");    // splitting command content
+                var channelName = splitMsgContents[1];
+                var channelReason = splitMsgContents[2];
+                if(channelReason == null){
+                    channelReason = "Outscal Server for education";
+                }
+                msg.guild.channels.create(channelName, { reason: channelReason });
+            }
+        }
         else if (msg.content.startsWith("!showid") && msg.channel.name === "bot") {           
             msg.reply("Your Discord Id is : " + msg.author);    
             //SendMessageToChannel(reply, msg.channel.id);       
@@ -130,3 +156,4 @@ function ListOfChannels(guild) {
 function SendMessageToChannel(message,channelID) {
     client.channels.cache.get(channelID).send(message);
 }
+
