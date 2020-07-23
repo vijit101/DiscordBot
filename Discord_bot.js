@@ -49,35 +49,34 @@ client.on('message', async msg => {
                 var batchID = splitMsgContents[2];                // roleId to assign
                 var studentIdList = allStudentId.split(",");
                 const roleToAssign = msg.guild.roles.cache.find(role=>role.id == batchID);
-                //console.log(splitMsgContents);
-                //console.log(studentIdList.length);
                 for(var i = 0 ;i<studentIdList.length;i++){
                     var studentmember = msg.guild.members.cache.find(member=>member.id == studentIdList[i]); //find from discord id which member of discord 
                     studentmember.roles.add(roleToAssign);
                     msg.reply("student : "+studentmember.displayName+" is assigned to role " + roleToAssign.name); 
                 }               
-                // old code             
-                //const studentmember = msg.guild.members.cache.find(member=>member.id == studentId);
-                //console.log(studentmember.nickname);             
-                //studentmember.roles.add(roleToAssign);    
-                //msg.member.roles.add(roleToAssign);           
-                //var reply = await Command.GiveRole(msg,splitMsgContents[1],splitMsgContents[2]);
-                //msg.reply("student : "+studentmember.displayName+" is assigned to role " + roleToAssign.name);
             }
         }
         else if (msg.content.startsWith("!createrole") && msg.channel.name === "bot"){
             if(msg.member.roles.cache.some(role => role.name === 'team')) 
             { 
-                // command as !createrole rolename ['permissions','permission2']
+                // command as !createrole rolename permissions,permission2
                 var splitMsgContents = msg.content.split(" ");    // splitting command content
                 var roleName = splitMsgContents[1];
-                var rolePermissions = splitMsgContents[2];
-                var defaultPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS'];
+                var rolePermissionsList = splitMsgContents[2].split(",");
+                for(var i =0;i<rolePermissionsList.length;i++){
+                    var rolePermissions = [];
+                    rolePermissions.push(rolePermissionsList[i]);
+                }
+                var defaultPerms = ['SEND_MESSAGES','Change_Nicknames'];
                 if(rolePermissions == null)
                 {
                     rolePermissions = defaultPerms;
+                    //console.log(typeof(rolePermissions));
                 }
+                //console.log(rolePermissions,roleName);
+                //console.log(typeof(rolePermissions));
                 msg.guild.roles.create({data:{name:roleName,permissions:rolePermissions}});
+                msg.reply("Role :"+roleName+"created with permissions :"+rolePermissions);
             }
         }
         else if (msg.content.startsWith("!createchannel") && msg.channel.name === "bot"){
@@ -88,9 +87,12 @@ client.on('message', async msg => {
                 if(channelReason == null){
                     channelReason = "Outscal Server for education";
                 }
+                //console.log(channelName,channelReason);
                 msg.guild.channels.create(channelName, { reason: channelReason });
+                msg.reply("Channel :"+channelName+"created with reason :"+channelReason);
             }
         }
+        
         else if (msg.content.startsWith("!showid") && msg.channel.name === "bot") {           
             msg.reply("Your Discord Id is : " + msg.author);    
             //SendMessageToChannel(reply, msg.channel.id);       
@@ -156,4 +158,3 @@ function ListOfChannels(guild) {
 function SendMessageToChannel(message,channelID) {
     client.channels.cache.get(channelID).send(message);
 }
-
